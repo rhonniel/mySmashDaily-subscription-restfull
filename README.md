@@ -1,0 +1,1 @@
+# mySmashDaily-subscription-restfull
