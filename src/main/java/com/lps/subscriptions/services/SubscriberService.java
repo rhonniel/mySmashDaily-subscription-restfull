@@ -21,4 +21,5 @@ public class SubscriberService {
         return subscriberRepository.save(subscriber);
     }
 
+
 }
