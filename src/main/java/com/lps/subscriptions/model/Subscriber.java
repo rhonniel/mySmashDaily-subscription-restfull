@@ -1,14 +1,15 @@
 package com.lps.subscriptions.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
 import java.util.Date;
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Entity
 public class Subscriber {
 
@@ -17,8 +18,11 @@ public class Subscriber {
     private int id;
 
     @Column
+    @NotBlank(message = "El nombre del subscritor no puede estar vacio")
     private String name;
     @Column
+    @NotBlank(message = "El correo no puede estar vacio")
+    @Email(message = "El correo  no tiene formato válido")
     private String email;
     @Column(name = "creation_date")
     private Date creationDate;

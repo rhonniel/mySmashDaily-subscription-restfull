@@ -13,6 +13,12 @@ public class SubscriberService {
     SubscriberRepository subscriberRepository;
 
     public List<Subscriber> getAllSubscribers(){
-       return subscriberRepository.findAll();
+
+        return subscriberRepository.findAll();
     }
+
+    public Subscriber saveSubscriber(Subscriber subscriber){
+        return subscriberRepository.save(subscriber);
+    }
+
 }
