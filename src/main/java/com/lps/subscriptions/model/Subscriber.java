@@ -10,7 +10,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Entity
+@Entity(name = "Subscriber")
+@Table(name = "subscriber")
 public class Subscriber {
 
     @Id
@@ -20,11 +21,14 @@ public class Subscriber {
     @Column
     @NotBlank(message = "El nombre del subscritor no puede estar vacio")
     private String name;
-    @Column
+
+    @Column(unique = true)
     @NotBlank(message = "El correo no puede estar vacio")
     @Email(message = "El correo  no tiene formato válido")
     private String email;
+
     @Column(name = "creation_date")
     private Date creationDate;
+
 
 }
