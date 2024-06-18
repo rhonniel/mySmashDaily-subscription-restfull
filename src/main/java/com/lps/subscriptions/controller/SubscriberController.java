@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(value = {"*"}, exposedHeaders = {"Content-Disposition"})
 @RequestMapping(value = "/subscriber")
 public class SubscriberController {
     @Autowired
