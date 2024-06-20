@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,5 +24,8 @@ public class Subscriber {
     private String email;
     @Column(name = "creation_date")
     private Date creationDate;
+
+    @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subscription> subscriptionList;
 
 }
