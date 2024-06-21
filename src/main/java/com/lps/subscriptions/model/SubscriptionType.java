@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 public class SubscriptionType {
+
+    public static SubscriptionType TOURNEY= new SubscriptionType(1,"Tournament Tracker");
+    public static SubscriptionType PLAYER= new SubscriptionType(2,"Favorite Player");
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

@@ -1,5 +1,6 @@
 package com.lps.subscriptions.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +26,8 @@ public class Subscriber {
     @Column(name = "creation_date")
     private Date creationDate;
 
-    @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "subscriber", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Subscription> subscriptionList;
 
 }

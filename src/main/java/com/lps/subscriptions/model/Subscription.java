@@ -1,5 +1,7 @@
 package com.lps.subscriptions.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +19,7 @@ public class Subscription {
 
     @ManyToOne
     @JoinColumn(name = "subscriber_id")
+    @JsonBackReference
     private Subscriber subscriber;
 
     @ManyToOne

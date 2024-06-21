@@ -2,6 +2,8 @@ package com.lps.subscriptions.services;
 
 import com.github.javafaker.Faker;
 import com.lps.subscriptions.model.Subscriber;
+import com.lps.subscriptions.model.Subscription;
+import com.lps.subscriptions.model.SubscriptionType;
 import com.lps.subscriptions.repository.SubscriberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,5 +49,4 @@ public class SubscriberServicesTest {
         }
         return lista;
     }
-
 }
