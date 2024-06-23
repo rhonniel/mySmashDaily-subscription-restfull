@@ -13,7 +13,6 @@ public class SubscriberService {
     SubscriberRepository subscriberRepository;
 
     public List<Subscriber> getAllSubscribers(){
-
         return subscriberRepository.findAll();
     }
 
