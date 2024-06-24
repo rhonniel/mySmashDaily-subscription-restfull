@@ -1,5 +1,6 @@
 package com.lps.subscriptions.controller;
 
+import com.lps.subscriptions.model.DTO.SubscriberDTO;
 import com.lps.subscriptions.model.Subscriber;
 import com.lps.subscriptions.services.SubscriberService;
 import jakarta.validation.Valid;
@@ -21,7 +22,7 @@ public class SubscriberController {
         return subscriberService.getAllSubscribers();
     }
     @PostMapping
-    public Subscriber createSubscriber(@Valid @RequestBody Subscriber subscriber){
+    public Subscriber createSubscriber(@Valid @RequestBody SubscriberDTO subscriber){
         return subscriberService.saveSubscriber(subscriber);
     }
 }
