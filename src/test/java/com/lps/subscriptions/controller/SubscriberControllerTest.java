@@ -3,9 +3,12 @@ package com.lps.subscriptions.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
+import com.lps.subscriptions.model.DTO.SubscriberDTO;
+import com.lps.subscriptions.model.DTO.SubscriptionDTO;
 import com.lps.subscriptions.model.Subscriber;
 import com.lps.subscriptions.model.Subscription;
 import com.lps.subscriptions.model.SubscriptionType;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -50,39 +53,42 @@ public class SubscriberControllerTest {
     }
 
     @Test
+    @Transactional
     public void createSubscriberWhenSucceed() throws Exception {
-        Subscriber newSubscriber =new Subscriber();
-        newSubscriber.setName(faker.name().fullName());
-        newSubscriber.setEmail(faker.internet().emailAddress());
-        newSubscriber.setCreationDate(new Date());
-
-        List<Subscription> subscriptionList =new ArrayList<>();
-
-        Subscription torneySubscription =new Subscription();
-        torneySubscription.setSubscriber(newSubscriber);
-        torneySubscription.setSubscriptionType(SubscriptionType.TOURNEY);
-        torneySubscription.setCreationDate(new Date());
-        torneySubscription.setConfiguration(null);
-
-
-        Subscription playerSubscription =new Subscription();
-        playerSubscription.setSubscriber(newSubscriber);
-        playerSubscription.setSubscriptionType(SubscriptionType.PLAYER);
-        playerSubscription.setCreationDate(new Date());
-        playerSubscription.setConfiguration(null);
-
-        subscriptionList.add(torneySubscription);
-        subscriptionList.add(playerSubscription);
-
-        newSubscriber.setSubscriptionList(subscriptionList);
+        SubscriberDTO newSubscriberDTO= generateSubscriberDTO();
         mockMvc.perform(post("/subscriber")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(newSubscriber))
+                        .content(objectMapper.writeValueAsString(newSubscriberDTO))
                 .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value(newSubscriber.getName()));
+                .andExpect(jsonPath("$.name").value(newSubscriberDTO.getName()));
+
+    }
 
 
 
+    private SubscriberDTO generateSubscriberDTO(){
+        SubscriberDTO subscriberDTO =new SubscriberDTO();
+        subscriberDTO.setName(faker.name().fullName());
+        subscriberDTO.setEmail(faker.internet().emailAddress());
+
+
+        List<SubscriptionDTO> subscriptionList =new ArrayList<>();
+
+        SubscriptionDTO tourneySubscription =new SubscriptionDTO();
+
+        tourneySubscription.setType(SubscriptionType.TOURNEY.getId());
+        tourneySubscription.setConfiguration("{'vaina':'vaina'}");
+
+
+        SubscriptionDTO playerSubscription =new SubscriptionDTO();
+        playerSubscription.setType(SubscriptionType.PLAYER.getId());
+        playerSubscription.setConfiguration(null);
+
+        subscriptionList.add(tourneySubscription);
+        subscriptionList.add(playerSubscription);
+
+        subscriberDTO.setSubscriptionDTOS(subscriptionList);
+        return subscriberDTO;
     }
 }

@@ -18,7 +18,6 @@ public class SubscriberController {
 
     @GetMapping
     public List<Subscriber> getAllSubscriber(){
-
         return subscriberService.getAllSubscribers();
     }
     @PostMapping
