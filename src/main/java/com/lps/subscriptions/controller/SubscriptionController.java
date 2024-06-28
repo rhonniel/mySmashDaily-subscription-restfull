@@ -14,9 +14,5 @@ public class SubscriptionController {
     @Autowired
     SubscriptionServices subscriptionServices;
 
-    @GetMapping
-    public String getAllSubscriber(){
-        return subscriptionServices.getHello();
-    }
 
 }
