@@ -26,7 +26,7 @@ public class SubscriberController {
     }
 
     @PutMapping
-    public Subscriber cancelSubscriber(@RequestHeader("Authorization") String token){
-        return subscriberService.cancelSubscriber(token);
+    public void cancelSubscriber(@RequestHeader("Authorization") String token){
+         subscriberService.cancelSubscriber(token);
     }
 }

@@ -4,6 +4,7 @@ import com.lps.subscriptions.model.DTO.SubscriberDTO;
 import com.lps.subscriptions.model.Subscriber;
 import com.lps.subscriptions.repository.SubscriberRepository;
 import com.lps.subscriptions.security.JwtTokenUtil;
+import io.jsonwebtoken.JwtException;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.bytebuddy.implementation.bytecode.Throw;
@@ -34,12 +35,17 @@ public class SubscriberService {
 
     public void cancelSubscriber(String token){
 
-        if(jwtTokenUtil.validateToken(token)) {
-            Subscriber subscriber= subscriberRepository.findById(jwtTokenUtil.extractEntityId(token))
-                    .orElseThrow(() -> new EntityNotFoundException("subscriber not found with id: " + jwtTokenUtil.extractEntityId(token)));
-            subscriber.getSubscriptionList().forEach(subscription -> subscription.setActive(false));
-            subscriberRepository.save(subscriber);
+        try {
+            jwtTokenUtil.validateToken(token);
+
+        } catch (JwtException e){
+            throw new IllegalArgumentException("Token validation failed", e);
         }
+
+        Subscriber subscriber= subscriberRepository.findById(jwtTokenUtil.extractEntityId(token))
+                .orElseThrow(() -> new EntityNotFoundException("subscriber not found with id: " + jwtTokenUtil.extractEntityId(token)));
+        subscriber.getSubscriptionList().forEach(subscription -> subscription.setActive(false));
+        subscriberRepository.save(subscriber);
 
     }
 
