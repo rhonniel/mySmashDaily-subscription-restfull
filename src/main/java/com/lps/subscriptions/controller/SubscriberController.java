@@ -24,4 +24,9 @@ public class SubscriberController {
     public Subscriber createSubscriber(@Valid @RequestBody SubscriberDTO subscriber){
         return subscriberService.saveSubscriber(subscriber);
     }
+
+    @PutMapping
+    public Subscriber cancelSubscriber(@RequestHeader("Authorization") String token){
+        return subscriberService.cancelSubscriber(token);
+    }
 }

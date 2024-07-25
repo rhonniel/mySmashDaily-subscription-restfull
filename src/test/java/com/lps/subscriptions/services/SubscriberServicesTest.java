@@ -63,6 +63,7 @@ public class SubscriberServicesTest {
         assertEquals(subscriberResult,subscriber);
 
     }
+    
 
 
     private Subscriber buildSubscriber(){
