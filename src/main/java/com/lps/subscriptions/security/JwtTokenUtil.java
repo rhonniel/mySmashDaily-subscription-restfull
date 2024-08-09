@@ -3,6 +3,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -21,16 +22,14 @@ public class JwtTokenUtil {
     private String secret;
 
     @Value("${jwt.expiration}")
-    private long jwtExpirationInMs;
-
-    private Key signingKey;
+    private Integer jwtExpirationInMs;
 
 
     // Método para extraer todos los claims
     public Claims extractAllClaims(String token) {
         try {
             return Jwts.parserBuilder()
-                    .setSigningKey(signingKey)
+                    .setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
@@ -64,9 +63,8 @@ public class JwtTokenUtil {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))
-                .signWith(signingKey, SignatureAlgorithm.HS256)
+                .signWith(Keys.hmacShaKeyFor(secret.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
     }
-
 
 }
