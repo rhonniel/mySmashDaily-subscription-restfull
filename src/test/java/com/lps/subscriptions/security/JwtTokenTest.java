@@ -1,14 +1,13 @@
 package com.lps.subscriptions.security;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
+
 
 @SpringJUnitConfig(classes = JwtTokenUtil.class)
 /*Esto es una combinación de @ExtendWith(SpringExtension.class) y @ContextConfiguration que se usa para cargar un

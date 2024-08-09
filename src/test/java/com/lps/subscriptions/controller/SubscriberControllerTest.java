@@ -5,14 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import com.lps.subscriptions.model.DTO.SubscriberDTO;
 import com.lps.subscriptions.model.DTO.SubscriptionDTO;
-import com.lps.subscriptions.model.Subscriber;
-import com.lps.subscriptions.model.Subscription;
 import com.lps.subscriptions.model.SubscriptionType;
 import com.lps.subscriptions.security.JwtTokenUtil;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
