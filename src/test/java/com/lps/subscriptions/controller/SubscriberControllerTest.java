@@ -8,6 +8,7 @@ import com.lps.subscriptions.model.DTO.SubscriptionDTO;
 import com.lps.subscriptions.model.Subscriber;
 import com.lps.subscriptions.model.Subscription;
 import com.lps.subscriptions.model.SubscriptionType;
+import com.lps.subscriptions.security.JwtTokenUtil;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,10 +22,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,6 +40,9 @@ public class SubscriberControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
     @BeforeEach
     public void setUp() {
         faker=new Faker();
@@ -63,6 +67,18 @@ public class SubscriberControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(newSubscriberDTO.getName()));
 
+    }
+
+
+    @Test
+    @Transactional
+    public void cancelSubscriberWhenSucceed() throws Exception {
+        String token=jwtTokenUtil.generateToken(UUID.fromString("123e4567-e89b-12d3-a456-426614174001"));
+        mockMvc.perform(put("/subscriber")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization",token)
+                        .with(csrf()))
+                .andExpect(status().isOk());
     }
 
 
@@ -91,4 +107,8 @@ public class SubscriberControllerTest {
         subscriberDTO.setSubscriptionDTOS(subscriptionList);
         return subscriberDTO;
     }
+
+
+
+
 }
