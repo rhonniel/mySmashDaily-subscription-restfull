@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Date;
 import java.util.UUID;
@@ -16,7 +17,8 @@ import java.util.UUID;
 @Entity
 public class Subscription {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @UuidGenerator
     private UUID id;
 
     @ManyToOne
