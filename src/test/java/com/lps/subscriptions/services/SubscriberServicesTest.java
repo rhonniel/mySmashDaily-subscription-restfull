@@ -7,6 +7,8 @@ import com.lps.subscriptions.model.Subscriber;
 import com.lps.subscriptions.model.Subscription;
 import com.lps.subscriptions.model.SubscriptionType;
 import com.lps.subscriptions.repository.SubscriberRepository;
+import com.lps.subscriptions.security.JwtTokenUtil;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,9 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -26,6 +26,9 @@ public class SubscriberServicesTest {
 
     @Mock
     private SubscriberRepository subscriberRepository;
+
+    @Mock
+    private JwtTokenUtil jwtTokenUtil;
     @Mock
     private ModelMapper modelMapper;
     @InjectMocks
@@ -64,6 +67,53 @@ public class SubscriberServicesTest {
 
     }
 
+
+    @Test
+    public void cancelSubscriberSucceed(){
+        Subscriber subscriber=buildSubscriber();
+        UUID id=UUID.randomUUID();
+
+        doNothing().when(jwtTokenUtil).validateToken(anyString()); // simula una llamada void  para dar clarida
+        when(jwtTokenUtil.extractEntityId(anyString())).thenReturn(id);
+        when(subscriberRepository.findById(id)).thenReturn(Optional.of(subscriber));
+        subscriberService.cancelSubscriber(anyString());
+
+        assertFalse(subscriber.getSubscriptionList().get(0).isActive());
+        verify(subscriberRepository).save(subscriber); // el metodo save no requiere ser simulado porque es void  no requiere mokearse ya es claro su concepto
+    }
+
+
+    @Test
+    public void cancelSubscriberWithInvalidToken(){
+
+        doThrow(new IllegalArgumentException("Token validation failed")).when(jwtTokenUtil).validateToken(anyString());
+
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
+            subscriberService.cancelSubscriber(anyString());
+        });
+
+        // Verificar el mensaje de la excepción
+        assertEquals("Token validation failed", thrown.getMessage());
+
+    }
+
+    @Test
+    public void cancelSubscriberWithInvalidSubscriber(){
+
+        UUID id=UUID.randomUUID();
+        doNothing().when(jwtTokenUtil).validateToken(anyString()); // simula una llamada void  para dar clarida
+        when(jwtTokenUtil.extractEntityId(anyString())).thenReturn(id);
+        doThrow(new EntityNotFoundException("Exception message")).when(subscriberRepository).findById(id);
+
+
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
+            subscriberService.cancelSubscriber(anyString());
+        });
+
+
+        assertEquals("Exception message", thrown.getMessage());
+
+    }
 
     private Subscriber buildSubscriber(){
         Subscriber subscriber = new Subscriber();
